@@ -1,7 +1,6 @@
 
 #include <windows.h>
 #include <string.h>
-
 #include "qemu.h"
 
 int qemu_reg_key1() {
@@ -20,6 +19,9 @@ int qemu_reg_key1() {
                 value[i] = toupper(value[i]);
             }
             if (strstr(value, "QEMU") != NULL) {
+                return 0;
+            }
+            else if (strstr(value, "BOCHS") != NULL) {
                 return 0;
             }
             else {
@@ -51,6 +53,69 @@ int qemu_reg_key2() {
                 value[i] = toupper(value[i]);
             }
             if (strstr(value, "QEMU") != NULL) {
+                return 0;
+            }
+            else {
+                return 1;
+            }
+        }
+        else {
+            return 1;
+        }
+    }
+    else {
+        return 1;
+    }
+}
+
+int qemu_reg_key3() {
+    HKEY regkey;
+    LONG retu;
+    char value[1024];
+    int i;
+    DWORD size;
+
+    size = sizeof(value);
+    retu = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\Description\\System\\CentralProcessor\\0", 0, KEY_READ, &regkey);
+    if (retu == ERROR_SUCCESS) {
+        retu = RegQueryValueEx(regkey, "ProcessorNameString", NULL, NULL, (BYTE*)value, &size);
+        if (retu == ERROR_SUCCESS) {
+            for (i = 0; i < strlen(value); i++) { /* Uppercase to case-insensitive */
+                value[i] = toupper(value[i]);
+            }
+            if (strstr(value, "QEMU") != NULL) {
+                return 0;
+            }
+
+            else {
+                return 1;
+            }
+        }
+        else {
+            return 1;
+        }
+    }
+    else {
+        return 1;
+    }
+}
+
+int qemu_reg_key4() {
+    HKEY regkey;
+    LONG retu;
+    char value[1024];
+    int i;
+    DWORD size;
+
+    size = sizeof(value);
+    retu = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\Description\\System\\BIOS", 0, KEY_READ, &regkey);
+    if (retu == ERROR_SUCCESS) {
+        retu = RegQueryValueEx(regkey, "SystemProductName", NULL, NULL, (BYTE*)value, &size);
+        if (retu == ERROR_SUCCESS) {
+            for (i = 0; i < strlen(value); i++) { /* Uppercase to case-insensitive */
+                value[i] = toupper(value[i]);
+            }
+            if (strstr(value, "KVM") != NULL) {
                 return 0;
             }
             else {

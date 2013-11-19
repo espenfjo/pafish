@@ -235,7 +235,27 @@ int main(int argc, char *argv[])
     else {
         print_not_traced();
     }
-    
+
+    printf("[*] Reg key (HKLM\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0 \"ProcessorNameString\") ... ");
+    if (qemu_reg_key3() == 0) {
+        write_log("Qemu traced using Reg key HKLM\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0  \"ProcessorNameString\"");
+        print_traced();
+        write_trace("hi_qemu");
+    }
+    else {
+        print_not_traced();
+    }
+
+    printf("[*] Reg key (HKLM\\HARDWARE\\Description\\System\\BIOS \"SystemProductName\") ... ");
+    if (qemu_reg_key4() == 0) {
+        write_log("Qemu traced using Reg key HKLM\\HARDWARE\\Description\\System\\BIOS \"SystemProductName\"");
+        print_traced();
+        write_trace("hi_qemu");
+    }
+    else {
+        print_not_traced();
+    }
+
     printf("\n\n");
     printf("[-] Finished, feel free to RE me.");
     
